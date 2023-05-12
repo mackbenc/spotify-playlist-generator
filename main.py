@@ -69,6 +69,7 @@ if __name__ == "__main__":
         "Authorization": f"Bearer {token}",
         "Content-Type": "application/json",
     }
+    
     check_data_file = os.path.isfile("data/final_file/data.json")
     if check_data_file != True:
         logger.info("Generating data.json file")

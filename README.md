@@ -20,6 +20,8 @@ Although with the refresh token saved you don't need it anymore. If you delete t
 
 ## Init
 
+__Add your StreamingHistory.json files under the data/all_history path__
+
 install python and venv
 
 ```bash
@@ -53,4 +55,10 @@ Run the generator:
 
 ```
 python3 main.py
+```
+
+Exit the venv:
+
+```
+deactivate
 ```

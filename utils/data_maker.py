@@ -9,6 +9,8 @@ def final_file_generator():
     out_data_path = 'data/final_file'
 
     for filename in os.listdir(data_path):
+        if filename == ".gitkeep":
+            continue
         filepath = os.path.join(data_path, filename)
         # checking if it is a file
         f = open(filepath)
