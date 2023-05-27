@@ -81,9 +81,3 @@ def final_file_generator():
 
     df.to_json(out_data_path + "/count_data.json", orient="split", compression="infer")
 
-    check_data_file = os.path.isfile("data/final_file/count_data.json")
-    if check_data_file != True:
-        logger.info("Generating data.json file")
-        data_maker.final_file_generator()
-    else:
-        logger.info("data.json file already exists. Data generating skipped")
