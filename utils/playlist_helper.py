@@ -5,7 +5,6 @@ import requests
 logger = logging.getLogger(__name__)
 
 
-
 def _get_playlists(headers, username, limit=50) -> tuple:
     logger.info("Getting playlists")
     # get all playlists
@@ -43,54 +42,18 @@ def create_or_get_playlist(headers, playlist_name, username) -> str:
 
 
 def save_data_to_playlist(df, playlist_id, headers):
-    counter = 0
     uri_list = []
     for index, row in df.iterrows():
-        track = str(row["trackName"]).replace(" ", "%20")
-        artist = str(row["artistName"]).replace(" ", "%20")
-        search_string = f"remaster%2520track:+{track}%2520artist:+{artist}"
+        track = str(row["track_name"])
+        artist = str(row["artist_name"])
+        count = str(row["cnt"])
+        uri = str(row["spotify_track_uri"])
 
-        response = requests.get(
-            f"https://api.spotify.com/v1/search?q={search_string}&type=track&market=HU&limit=1",
-            headers=headers,
-            timeout=5,
+        logger.info(
+            'inserted: "%(artist)s - %(track)s" with count %(count)s'
+            % {"track": str(track), "artist": str(artist), "count": str(count)}
         )
-
-        items = response.json().get("tracks").get("items")
-        if len(items):
-            track = row["artistName"], row["trackName"]
-            # print(items[0].get("external_urls").get("spotify"))
-            # print(items[0].get("uri"))
-
-            response = requests.get(
-                f'https://api.spotify.com/v1/tracks/{items[0].get("id")}?market=HU',
-                headers=headers,
-                timeout=5,
-            )
-
-            track_back = response.json().get("artists")[0].get(
-                "name"
-            ), response.json().get("name")
-
-            if track[0] != track_back[0] or (
-                track_back[1] not in track[1] and track[1] not in track_back[1]
-            ):
-                logger.error(
-                    "%(track_back)s instead of: %(track)s"
-                    % {"track_back": str(track_back), "track": str(track)}
-                )
-                counter += 1
-                continue
-
-            if track != track_back:
-                logger.info(
-                    "%(track_back)s instead of: %(track)s"
-                    % {"track_back": str(track_back), "track": str(track)}
-                )
-            else:
-                logger.info("inserted: %(track)s" % {"track": str(track)})
-
-            uri_list.append(items[0].get("uri"))
+        uri_list.append(uri)
 
     json_data = {
         "uris": uri_list,
@@ -104,4 +67,4 @@ def save_data_to_playlist(df, playlist_id, headers):
         timeout=5,
     )
 
-    return counter
+    print(response.content)

@@ -1,6 +1,6 @@
 spotify-playlist-generator
 .c*
 *__pycache__*
-StreamingHistory*.json
+endsong*.json
 refresh_token.json
-data*.json
+*data*.json
